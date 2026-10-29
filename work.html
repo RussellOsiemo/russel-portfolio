@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Work, Russel Osiemo, Data Scientist</title>
+  <meta name="description" content="Case studies from Russel Osiemo: demand forecasting, order automation, customer analytics, price matching, a small clinical language model and an analytics assistant.">
+  <link rel="canonical" href="https://russelosiemoportofolio.netlify.app/work.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Russel Osiemo">
+  <meta property="og:title" content="Work, Russel Osiemo, Data Scientist">
+  <meta property="og:description" content="Six short case studies: the problem, the data, what I built, the result, and what I would do differently.">
+  <meta property="og:url" content="https://russelosiemoportofolio.netlify.app/work.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/assets/fonts/source-serif-4-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/ibm-plex-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="page">
+    <header class="site-head">
+      <a class="home" href="/">Russel Osiemo</a>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="/work.html" aria-current="page">Work</a></li>
+          <li><a href="/#about">About</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main">
+      <h1>Work</h1>
+      <p class="lede">Six pieces of work from the last few years. Client work is described without naming the business, and its code stays private.</p>
+
+      <article class="case" id="forecasting">
+        <h2>Demand forecasting and reorder planning</h2>
+        <p class="meta">[An FMCG or a liquor] distributor, [year]. Code private.</p>
+        <p><strong>Problem.</strong> The business needed a forecast it could reorder from every week. Running out of stock meant lost sales, and over-ordering tied up cash in slow lines.</p>
+        <p><strong>Data.</strong> The full sales history, supplier lead times and container limits.</p>
+        <p><strong>What I built.</strong> Demand forecasts using Prophet and XGBoost, trained on the full sales history. From the forecasts I set reorder points that move with expected demand instead of staying fixed. Supplier lead times and container limits are built into the model, so the suggested orders are ones that can actually be placed and shipped.</p>
+        <p><strong>Result.</strong> The forecasts are used every week for reorder planning. Stockout periods fell by 25%, and the moving reorder points cut excess stock by 20%.</p>
+        <p><strong>What I would do differently.</strong> I would build a rolling backtest first, scoring both models week by week on past cut-off dates. It would show for each product group which model to trust, and it gives the people placing orders a simple record of how far off the forecast usually is.</p>
+      </article>
+
+      <article class="case" id="orders">
+        <h2>Purchase order automation</h2>
+        <p class="meta">[An FMCG or a liquor] distributor, [year]. Code private.</p>
+        <p><strong>Problem.</strong> Retailer purchase orders arrived by email, and each one had to become a correctly priced sales order in Zoho Inventory. Duplicate orders and pricing mistakes were easy to miss.</p>
+        <p><strong>Data.</strong> Purchase orders from retailer emails, a barcode master with prices, and the customer and order records in Zoho Inventory.</p>
+        <p><strong>What I built.</strong> A pipeline that reads each purchase order from email and validates it. It removes duplicates using the order and customer keys, prices each line from the barcode master net of VAT, and posts the sales order through the Zoho Inventory API. It runs on a schedule on GitHub Actions. I added data quality monitoring around each step so problems show up before an order is posted.</p>
+        <p><strong>Result.</strong> The data quality monitoring cut the pipeline's error rate by 35%.</p>
+        <p><strong>What I would do differently.</strong> I would keep a folder of awkward real orders from the start, one for each validation rule, and run every change to the pipeline against them. Email orders come in many small variations, and a test set built from real failures is the cheapest way to stop old problems coming back.</p>
+      </article>
+
+      <article class="case" id="customers">
+        <h2>Customer analytics</h2>
+        <p class="meta">[An FMCG or a liquor] distributor, [year]. Code private.</p>
+        <p><strong>Problem.</strong> Sales were growing, but it was not clear which customers drove the growth, which ones were slipping away, or whether the business was selling more or simply charging more.</p>
+        <p><strong>Data.</strong> Sales transactions by customer, product and date.</p>
+        <p><strong>What I built.</strong> RFM scoring to group customers by how recently, how often and how much they buy. Customer lifetime value estimates. ABC/XYZ classification, which sorts items by value and by how steady their demand is. Tracking of new, reactivated, returning and churned customers over time. And a price/volume decomposition that splits revenue growth into the part from price changes and the part from quantity sold.</p>
+        <p><strong>Result.</strong> The decomposition showed that growth was price-driven while volume fell. Revenue going up was hiding a drop in units sold, which changes the conversation about where the business is heading.</p>
+        <p><strong>What I would do differently.</strong> I would agree the definition of a churned customer with the sales team before building anything. The churn numbers move a lot depending on how many weeks without an order counts as lost, and that is a business decision, not a modelling one.</p>
+      </article>
+
+      <article class="case" id="pricing">
+        <h2>Supplier price matching and competitor price monitoring</h2>
+        <p class="meta">[An FMCG or a liquor] distributor, [year]. Code private.</p>
+        <p><strong>Problem.</strong> The same product is named and coded differently by each supplier and each retailer. Before prices can be compared, every product has to be matched across lists that do not share a common key.</p>
+        <p><strong>Data.</strong> Price lists from 13 suppliers, and retailer product listings for about 453 SKUs.</p>
+        <p><strong>What I built.</strong> Two tools. The first is an LLM-assisted matcher that works through the 13 supplier price lists in batches and lines up entries that are the same product. The second monitors competitor prices: Selenium and BeautifulSoup collect retailer listings, and RapidFuzz fuzzy-matches them to about 453 of the distributor's SKUs.</p>
+        <p><strong>Result.</strong> Supplier prices for the same product can be compared across all 13 lists, and retailer prices for about 453 SKUs can be tracked against the distributor's own.</p>
+        <p><strong>What I would do differently.</strong> I would build a small labelled set of confirmed matches early and measure accuracy on it after every change, for both the LLM step and the fuzzy matching. Without one, it is hard to say how often a match is wrong, and a wrong match quietly gives a wrong price comparison.</p>
+      </article>
+
+      <article class="case" id="clinical">
+        <h2>Kenya Clinical Reasoning Challenge</h2>
+        <p class="meta">PATH and Zindi competition, 2025. Finished 263rd of 386. <a href="https://zindi.world/competitions/kenya-clinical-reasoning-challenge">Competition page</a>, <a href="https://zindi.world/users/Russell_osiemo">my Zindi profile</a>. Code private on Zindi.</p>
+        <p><strong>Problem.</strong> Answer clinical reasoning questions the way an expert clinician would, with a model small enough to run on low-cost hardware.</p>
+        <p><strong>Data.</strong> More than 400 clinical vignettes, with expert clinician answers used for evaluation.</p>
+        <p><strong>What I built.</strong> A quantised language model under 1 billion parameters. It runs in under 2GB of RAM with inference under 100 milliseconds, which were the limits the challenge set for realistic deployment.</p>
+        <p><strong>Result.</strong> The model's answers were scored against the expert clinician answers. I finished 263rd of 386 entrants. Working inside hard limits on memory and speed was the most useful part, because it forces choices about model size that larger setups let you avoid.</p>
+        <p><strong>What I would do differently.</strong> I would spend less time on the model and more on the vignettes, reading the expert answers closely to learn their structure and making my output match it. With a small model, getting the shape of the answer right counts for a lot of the score.</p>
+      </article>
+
+      <article class="case" id="assistant">
+        <h2>Natural-language analytics assistant</h2>
+        <p class="meta">[year]. In design. Code private.</p>
+        <p><strong>Problem.</strong> Managers want to ask questions of their sales data in plain language. A language model that does the arithmetic itself can return a confident, wrong figure, and for stock or finance decisions a wrong number is worse than no answer.</p>
+        <p><strong>Data.</strong> The business's own reporting data. Every figure comes from defined calculations on it.</p>
+        <p><strong>What I am building.</strong> The model only interprets the question. It turns the question into a request for a defined metric, with filters and a time period. Fixed, auditable business logic then does every calculation. The model never produces a figure, so every number in an answer can be traced back to a calculation someone can check.</p>
+        <p><strong>Result.</strong> None yet. It is still in design. The main design decision is already made: the model handles language and the code handles numbers.</p>
+        <p><strong>What I am still working out.</strong> What the assistant should do when a question falls outside the defined metrics. My current plan is for it to say so plainly and suggest the closest metric it does support, rather than guess.</p>
+      </article>
+
+      <h2 id="earlier">Earlier work</h2>
+      <p>Web and mobile projects from university, before I moved into data.</p>
+      <ul class="plain">
+        <li><a href="https://github.com/RussellOsiemo/Flamebird_Car_Dealers">FlameBird car sales site</a> (2021). Car listings and trade-in requests with user accounts and an agent view of sales and stock. HTML, Bootstrap, JavaScript, PHP and MySQL.</li>
+        <li><a href="https://github.com/RussellOsiemo/ChatMe">ChatMe</a> (2021). A simple chat app in JavaScript, PHP and MySQL.</li>
+        <li><a href="https://github.com/DevSheila/studentAdmissions">Maseno student admissions portal</a> (2021). Paperless, staged document submission for admissions, built with <a href="https://github.com/DevSheila">Sheila Sharon</a>.</li>
+        <li>Flutter apps (2022 to 2023): <a href="https://github.com/RussellOsiemo/Quote">Quote</a>, <a href="https://github.com/RussellOsiemo/Russell_id">Russell_id</a> and <a href="https://github.com/RussellOsiemo/login_app_flutter">login_app_flutter</a>. Small apps I built while learning Flutter and Dart.</li>
+      </ul>
+    </main>
+
+    <footer class="site-foot">
+      <p>Last updated October 2026. <a href="mailto:russelosiemo@gmail.com">russelosiemo@gmail.com</a></p>
+    </footer>
+  </div>
+</body>
+</html>
