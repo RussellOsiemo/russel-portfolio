@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://russelosiemoportofolio.netlify.app/sitemap.xml
+Sitemap: https://russel-osiemo.netlify.app/sitemap.xml

@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Work, Russel Osiemo, Data Scientist</title>
   <meta name="description" content="Case studies from Russel Osiemo: demand forecasting, order automation, customer analytics, price matching, a small clinical language model and an analytics assistant.">
-  <link rel="canonical" href="https://russelosiemoportofolio.netlify.app/work.html">
+  <link rel="canonical" href="https://russel-osiemo.netlify.app/work.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Russel Osiemo">
   <meta property="og:title" content="Work, Russel Osiemo, Data Scientist">
   <meta property="og:description" content="Six short case studies: the problem, the data, what I built, the result, and what I would do differently.">
-  <meta property="og:url" content="https://russelosiemoportofolio.netlify.app/work.html">
+  <meta property="og:url" content="https://russel-osiemo.netlify.app/work.html">
   <meta name="twitter:card" content="summary">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="/assets/fonts/source-serif-4-600.woff2" as="font" type="font/woff2" crossorigin>
@@ -36,7 +36,7 @@
 
       <article class="case" id="forecasting">
         <h2>Demand forecasting and reorder planning</h2>
-        <p class="meta">[An FMCG or a liquor] distributor, [year]. Code private.</p>
+        <p class="meta">An FMCG distributor, 2024. Code private.</p>
         <p><strong>Problem.</strong> The business needed a forecast it could reorder from every week. Running out of stock meant lost sales, and over-ordering tied up cash in slow lines.</p>
         <p><strong>Data.</strong> The full sales history, supplier lead times and container limits.</p>
         <p><strong>What I built.</strong> Demand forecasts using Prophet and XGBoost, trained on the full sales history. From the forecasts I set reorder points that move with expected demand instead of staying fixed. Supplier lead times and container limits are built into the model, so the suggested orders are ones that can actually be placed and shipped.</p>
@@ -46,7 +46,7 @@
 
       <article class="case" id="orders">
         <h2>Purchase order automation</h2>
-        <p class="meta">[An FMCG or a liquor] distributor, [year]. Code private.</p>
+        <p class="meta">An FMCG distributor, [year]. Code private.</p>
         <p><strong>Problem.</strong> Retailer purchase orders arrived by email, and each one had to become a correctly priced sales order in Zoho Inventory. Duplicate orders and pricing mistakes were easy to miss.</p>
         <p><strong>Data.</strong> Purchase orders from retailer emails, a barcode master with prices, and the customer and order records in Zoho Inventory.</p>
         <p><strong>What I built.</strong> A pipeline that reads each purchase order from email and validates it. It removes duplicates using the order and customer keys, prices each line from the barcode master net of VAT, and posts the sales order through the Zoho Inventory API. It runs on a schedule on GitHub Actions. I added data quality monitoring around each step so problems show up before an order is posted.</p>
@@ -56,7 +56,7 @@
 
       <article class="case" id="customers">
         <h2>Customer analytics</h2>
-        <p class="meta">[An FMCG or a liquor] distributor, [year]. Code private.</p>
+        <p class="meta">A liquor distributor, 2025. Code private.</p>
         <p><strong>Problem.</strong> Sales were growing, but it was not clear which customers drove the growth, which ones were slipping away, or whether the business was selling more or simply charging more.</p>
         <p><strong>Data.</strong> Sales transactions by customer, product and date.</p>
         <p><strong>What I built.</strong> RFM scoring to group customers by how recently, how often and how much they buy. Customer lifetime value estimates. ABC/XYZ classification, which sorts items by value and by how steady their demand is. Tracking of new, reactivated, returning and churned customers over time. And a price/volume decomposition that splits revenue growth into the part from price changes and the part from quantity sold.</p>
@@ -66,11 +66,11 @@
 
       <article class="case" id="pricing">
         <h2>Supplier price matching and competitor price monitoring</h2>
-        <p class="meta">[An FMCG or a liquor] distributor, [year]. Code private.</p>
+        <p class="meta">Supplier matching for a liquor distributor, 2025. Competitor price monitoring for an FMCG distributor, [year]. Code private.</p>
         <p><strong>Problem.</strong> The same product is named and coded differently by each supplier and each retailer. Before prices can be compared, every product has to be matched across lists that do not share a common key.</p>
         <p><strong>Data.</strong> Price lists from 13 suppliers, and retailer product listings for about 453 SKUs.</p>
-        <p><strong>What I built.</strong> Two tools. The first is an LLM-assisted matcher that works through the 13 supplier price lists in batches and lines up entries that are the same product. The second monitors competitor prices: Selenium and BeautifulSoup collect retailer listings, and RapidFuzz fuzzy-matches them to about 453 of the distributor's SKUs.</p>
-        <p><strong>Result.</strong> Supplier prices for the same product can be compared across all 13 lists, and retailer prices for about 453 SKUs can be tracked against the distributor's own.</p>
+        <p><strong>What I built.</strong> Two tools. The first is an LLM-assisted matcher that works through the 13 supplier price lists in batches and lines up entries that are the same product. The second monitors competitor prices: Selenium and BeautifulSoup collect retailer listings, and RapidFuzz fuzzy-matches them to about 453 of the FMCG distributor's SKUs.</p>
+        <p><strong>Result.</strong> Supplier prices for the same product can be compared across all 13 lists, and retailer prices for about 453 SKUs can be tracked against the FMCG distributor's own.</p>
         <p><strong>What I would do differently.</strong> I would build a small labelled set of confirmed matches early and measure accuracy on it after every change, for both the LLM step and the fuzzy matching. Without one, it is hard to say how often a match is wrong, and a wrong match quietly gives a wrong price comparison.</p>
       </article>
 
@@ -86,7 +86,7 @@
 
       <article class="case" id="assistant">
         <h2>Natural-language analytics assistant</h2>
-        <p class="meta">[year]. In design. Code private.</p>
+        <p class="meta">2026. In design. Code private.</p>
         <p><strong>Problem.</strong> Managers want to ask questions of their sales data in plain language. A language model that does the arithmetic itself can return a confident, wrong figure, and for stock or finance decisions a wrong number is worse than no answer.</p>
         <p><strong>Data.</strong> The business's own reporting data. Every figure comes from defined calculations on it.</p>
         <p><strong>What I am building.</strong> The model only interprets the question. It turns the question into a request for a defined metric, with filters and a time period. Fixed, auditable business logic then does every calculation. The model never produces a figure, so every number in an answer can be traced back to a calculation someone can check.</p>
